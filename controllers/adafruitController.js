@@ -43,7 +43,7 @@ client.on('message', async (topic, message) => {
     console.log(`Đã lưu dữ liệu vào database`);
 
 
-
+    let noti = "Đã tiến hành bật thiết bị trong vòng 5s để cố gắng khắc phục"
     let device = null;
     if (feed == FEED_SOIL) device = 'soil';
     else if (feed == FEED_HUMID) device = 'humid';
@@ -61,20 +61,25 @@ client.on('message', async (topic, message) => {
           console.log(`[Auto] ${device} < ${down} → BẬT thiết bị`);
           if (device === 'soil' || device === 'humid') {
             await sendDataToAdafruit(FEED_PUMP, 100);
+            io.emit('notification', { feed, value } );
             setTimeout(() => {
                 sendDataToAdafruit(FEED_PUMP, 0);
                 console.log(`[Auto] TẮT PUMP sau 5 giây`);
+                io.emit('notification', noti );
               }, 5000); 
         }
           if (device === 'light') {
             await sendDataToAdafruit(FEED_LED, 100);
+            io.emit('notification', { feed, value } );
             setTimeout(() => {
                 sendDataToAdafruit(FEED_LED, 0);
                 console.log(`[Auto] TẮT LED sau 5 giây`);
+                io.emit('notification', noti );
               }, 5000); 
         }
         } else if (value > up) {
           console.log(`[Auto] ${device} > ${up} → TẮT thiết bị`);
+          io.emit('notification', { feed, value } );
           if (device === 'soil' || device === 'humid') await sendDataToAdafruit(FEED_PUMP, 0);
           if (device === 'light') await sendDataToAdafruit(FEED_LED, 0);
         }
