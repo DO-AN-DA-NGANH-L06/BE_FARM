@@ -1,0 +1,83 @@
+DROP DATABASE IF EXISTS Farm;
+CREATE DATABASE Farm;
+USE Farm;
+
+-- Người dùng
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
+
+-- Khu vực canh tác tương ứng với user
+CREATE TABLE locals (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT,
+  name VARCHAR(100), -- Ví dụ: "Farm 1", "Khu vườn nhà"
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Bảng thiết bị đo nhiệt độ
+CREATE TABLE TEMP (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  local_id INT,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  temp FLOAT,
+  FOREIGN KEY (local_id) REFERENCES locals(id) ON DELETE CASCADE
+);
+
+-- Bảng độ ẩm không khí
+CREATE TABLE HUMID (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  local_id INT,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  humid FLOAT,
+  FOREIGN KEY (local_id) REFERENCES locals(id) ON DELETE CASCADE
+);
+
+-- Bảng ánh sáng
+CREATE TABLE LIGHT (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  local_id INT,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  light FLOAT,
+  FOREIGN KEY (local_id) REFERENCES locals(id) ON DELETE CASCADE
+);
+
+-- Bảng độ ẩm đất
+CREATE TABLE SOIL (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  local_id INT,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  soil FLOAT,
+  FOREIGN KEY (local_id) REFERENCES locals(id) ON DELETE CASCADE
+);
+
+-- Bảng điều khiển LED
+CREATE TABLE LED (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  local_id INT,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  led FLOAT,
+  FOREIGN KEY (local_id) REFERENCES locals(id) ON DELETE CASCADE
+);
+
+-- Bảng điều khiển PUMP
+CREATE TABLE PUMP (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  local_id INT,
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  pump FLOAT,
+  FOREIGN KEY (local_id) REFERENCES locals(id) ON DELETE CASCADE
+);
+
+-- Giới hạn thiết bị
+CREATE TABLE LIMITED (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  local_id INT,
+  device VARCHAR(50),
+  limit_up FLOAT,
+  limit_down FLOAT,
+  time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (local_id) REFERENCES locals(id) ON DELETE CASCADE
+);
