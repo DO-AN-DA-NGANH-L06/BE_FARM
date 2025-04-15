@@ -27,6 +27,7 @@ adafruitController.setupIO(io);
 
 
 server.listen(PORT, async () => {
+  console.log(`Swagger docs at http://localhost:${PORT}/api-docs`);
   console.log(`Server chạy ở đại chỉ http://localhost:${PORT}`);
   await testConnection(); 
 });
