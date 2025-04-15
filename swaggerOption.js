@@ -18,7 +18,7 @@ const swaggerSpec = swaggerJSDoc({
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ['./swaggerDocs.js'], // <-- file chứa comment Swagger
+  apis: ['./swaggerDocs.js'], 
 });
 
 module.exports = swaggerSpec;
