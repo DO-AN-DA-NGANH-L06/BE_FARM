@@ -1,7 +1,7 @@
 // controllers/controlController.js
 const {   FEED_LED,FEED_PUMP } = require('../config/adafruit');
 const { sendDataToAdafruit } = require('./adafruitController'); 
-const {saveLimit} = require('../services/adafruitService')
+const {saveLimit, getLimit} = require('../services/adafruitService')
 const {getGraphData} = require('../models/graph')
 
 const controlDevice = async (req, res) => {
@@ -37,6 +37,23 @@ const limitOfDevice = async (req, res) => {
       }
 }
 
+const getLimitOfDevice = async (req, res) => {
+  const { device } = req.query;
+
+  if (!device) {
+    return res.status(400).json({ error: 'Thiếu thông tin' });
+  }
+
+  try {
+    const limit = await getLimit(device);
+    return res.json(limit);
+  } catch (error) {
+    console.error('Lỗi lấy limit:', error);
+    return res.status(500).json({ error: 'Lỗi server' });
+  }
+};
+
+
 
 const graphDevice = async (req, res) => {
     try {
@@ -49,4 +66,4 @@ const graphDevice = async (req, res) => {
   };
 
 
-module.exports = { controlDevice, limitOfDevice, graphDevice };
+module.exports = { controlDevice, limitOfDevice, graphDevice, getLimitOfDevice };

@@ -101,6 +101,43 @@
 
 /**
  * @swagger
+ * /device/limited?device={device}:
+ *   get:
+ *     summary: Lấy giới hạn cho thiết bị
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: device
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [soil, humid, led, pump, light, temp]
+ *         description: Loại thiết bị cần lấy giới hạn
+ *     responses:
+ *       200:
+ *         description: Dữ liệu limited của cảm biến
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     limit_up:
+ *                       type: number
+ *                     limit_down:
+ *                       type: number
+ *       400:
+ *         description: Thiếu thông tin
+ *       500:
+ *         description: Lỗi server
+ */
+
+
+/**
+ * @swagger
  * /device/graph:
  *   get:
  *     summary: Lấy dữ liệu biểu đồ
