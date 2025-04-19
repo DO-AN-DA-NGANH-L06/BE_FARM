@@ -24,6 +24,7 @@ client.on('connect', () => {
   client.subscribe(`${AIO_USERNAME}/feeds/${FEED_TEMP}`);
   client.subscribe(`${AIO_USERNAME}/feeds/${FEED_PUMP}`);
   client.subscribe(`${AIO_USERNAME}/feeds/${FEED_SOIL}`);
+  
 });
 
 client.on('error', (err) => {
