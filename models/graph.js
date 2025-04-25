@@ -25,7 +25,17 @@ const getGraphData = async () => {
     [lastMonth, now]
   );
 
-  return { temp: tempData, humid: humidData, light: lightData, soil: soilData };
+  const [ledData] = await pool.query(
+    `SELECT timestamp, led AS value FROM LED WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp ASC`,
+    [lastMonth, now]
+  );
+
+  const [pumpData] = await pool.query(
+    `SELECT timestamp, pump AS value FROM PUMP WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp ASC`,
+    [lastMonth, now]
+  );
+
+  return { temp: tempData, humid: humidData, light: lightData, soil: soilData , led: ledData, pump: pumpData};
 };
 
 module.exports = { getGraphData };
